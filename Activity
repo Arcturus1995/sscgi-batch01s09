@@ -96,7 +96,7 @@ class ElectricPokemon extends Pokemon {
 
   specialAttack(opponent, damage) {
     console.log(
-      `%c${this.trainer.name}: ${this.name} uses Thunderbolt on ${opponent.name} causing ${damage} damage!`,
+      `%c${this.trainer.name}: ${this.name} uses Thunderbolt on ${opponent.name} causing ${damage}!`,
       "color: yellow; font-weight: bold;"
     );
     opponent.receiveDamage(damage);
@@ -235,8 +235,8 @@ class Battle {
       } else {
         console.log(`${trainer1Pokemon.name} is the winner!`);
         trainer1Pokemon.fullyHeal();
-        // winnerPokemons.push(trainer1Pokemon.name);
-        // winnerBracket.push(this.trainer1);
+        winnerPokemons.push(trainer1Pokemon.name);
+        winnerBracket.push(this.trainer1);
         trainer1Pokemon = this.trainer1.selectNextPokemon(trainer1Pokemon);
       }
 
@@ -296,10 +296,10 @@ class Battle {
       const finalWinner = finalResult ? winners[0] : winners[1];
       console.log(`The Champion of the tournament is ${finalWinner.name}!`);
     }
-    // winners.forEach(function (winner) {
-    //   winnerBracket.push(winner.name);
-    // });
-    // console.log(`First round winner: ${winnerBracket}`);
+    winners.forEach(function (winner) {
+      winnerBracket.push(winner.name);
+    });
+    console.log(`First round winner: ${winnerBracket}`);
   }
 }
 
@@ -334,36 +334,36 @@ function assignPokemons(trainers, pokemonCount) {
   const randomDefense = Math.floor(Math.random() * 6);
   let availablePokemons = [
     // Electric pokemon
-    new ElectricPokemon("Volt", 10, 100, Math.floor(Math.random() * 6)),
-    new ElectricPokemon("Raikou ", 10, 100, Math.floor(Math.random() * 6)),
-    new ElectricPokemon("Pikachu", 10, 100, Math.floor(Math.random() * 6)),
-    new ElectricPokemon("Gust", 10, 100, Math.floor(Math.random() * 6)),
-    new ElectricPokemon("Regieleki", 10, 100, Math.floor(Math.random() * 6)),
+    new ElectricPokemon("Volt", 10, 100, randomDefense),
+    new ElectricPokemon("Raikou ", 10, 100, randomDefense),
+    new ElectricPokemon("Pikachu", 10, 100, randomDefense),
+    new ElectricPokemon("Gust", 10, 100, randomDefense),
+    new ElectricPokemon("Regieleki", 10, 100, randomDefense),
     // Fire pokemon
-    new FirePokemon("Charmander", 10, 100, Math.floor(Math.random() * 6)),
-    new FirePokemon("Moltres", 10, 100, Math.floor(Math.random() * 6)),
-    new FirePokemon("Reshiram", 10, 100, Math.floor(Math.random() * 6)),
-    new FirePokemon("Flareon", 10, 100, Math.floor(Math.random() * 6)),
-    new FirePokemon("Chi-Yu", 10, 100, Math.floor(Math.random() * 6)),
+    new FirePokemon("Charmander", 10, 100, randomDefense),
+    new FirePokemon("Moltres", 10, 100, randomDefense),
+    new FirePokemon("Reshiram", 10, 100, randomDefense),
+    new FirePokemon("Flareon", 10, 100, randomDefense),
+    new FirePokemon("Chi-Yu", 10, 100, randomDefense),
     // water pokemon
-    new WaterPokemon("Squirtle", 10, 100, Math.floor(Math.random() * 6)),
-    new WaterPokemon("Palkia", 10, 100, Math.floor(Math.random() * 6)),
-    new WaterPokemon("Manaphy", 10, 100, Math.floor(Math.random() * 6)),
-    new WaterPokemon("Blastoise", 10, 100, Math.floor(Math.random() * 6)),
-    new WaterPokemon("Pelipper", 10, 100, Math.floor(Math.random() * 6)),
+    new WaterPokemon("Squirtle", 10, 100, randomDefense),
+    new WaterPokemon("Palkia", 10, 100, randomDefense),
+    new WaterPokemon("Manaphy", 10, 100, randomDefense),
+    new WaterPokemon("Blastoise", 10, 100, randomDefense),
+    new WaterPokemon("Pelipper", 10, 100, randomDefense),
     //earth pokemon
-    new EarthPokemon("Bulbasaur", 10, 100, Math.floor(Math.random() * 6)),
-    new EarthPokemon("Zygarde ", 10, 100, Math.floor(Math.random() * 6)),
-    new EarthPokemon("Garchomp", 10, 100, Math.floor(Math.random() * 6)),
-    new EarthPokemon("Palossand", 10, 100, Math.floor(Math.random() * 6)),
-    new EarthPokemon("Sandile", 10, 100, Math.floor(Math.random() * 6)),
+    new EarthPokemon("Bulbasaur", 10, 100, randomDefense),
+    new EarthPokemon("Zygarde ", 10, 100, randomDefense),
+    new EarthPokemon("Garchomp", 10, 100, randomDefense),
+    new EarthPokemon("Palossand", 10, 100, randomDefense),
+    new EarthPokemon("Sandile", 10, 100, randomDefense),
 
     // wind pokemon
-    new WindPokemon("Tornadus", 10, 100, Math.floor(Math.random() * 6)),
-    new WindPokemon("Rayquaza", 10, 100, Math.floor(Math.random() * 6)),
-    new WindPokemon("Lugia", 10, 100, Math.floor(Math.random() * 6)),
-    new WindPokemon("Noivern", 10, 100, Math.floor(Math.random() * 6)),
-    new WindPokemon("Swellow", 10, 100, Math.floor(Math.random() * 6)),
+    new WindPokemon("Tornadus", 10, 100, randomDefense),
+    new WindPokemon("Rayquaza", 10, 100, randomDefense),
+    new WindPokemon("Lugia", 10, 100, randomDefense),
+    new WindPokemon("Noivern", 10, 100, randomDefense),
+    new WindPokemon("Swellow", 10, 100, randomDefense),
   ];
 
   trainers.forEach((trainer) => {
