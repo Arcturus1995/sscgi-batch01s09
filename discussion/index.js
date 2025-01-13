@@ -262,159 +262,159 @@ console.log(`Results of numbers multiplied by themselves: ${numbersMap}`);
 
 // map() vs forEach()
 
-let numbersForEach = numbers.forEach(function (number) {
-  let result = number * number;
-  return result;
-});
-console.log("forEach results: ", numbersForEach);
+// let numbersForEach = numbers.forEach(function (number) {
+//   let result = number * number;
+//   return result;
+// });
+// console.log("forEach results: ", numbersForEach);
 
-// forEach(), loop overall items in the array as does map() but forEach(), does not return a new array
+// // forEach(), loop overall items in the array as does map() but forEach(), does not return a new array
 
-// every()
-/*
-	-check if all element in an array meet the given condition
-	- this is useful for validating data stored in arrays especially when dealing with large amounts of data
-	-returns true value if all elements meet the given condition
-	and false otherwise
-	- syntax: const result = arrayName.every(function(element){ return condition; });
+// // every()
+// /*
+// 	-check if all element in an array meet the given condition
+// 	- this is useful for validating data stored in arrays especially when dealing with large amounts of data
+// 	-returns true value if all elements meet the given condition
+// 	and false otherwise
+// 	- syntax: const result = arrayName.every(function(element){ return condition; });
 
-*/
+// */
 
-let numbersEvery = numbers.every(function (number) {
-  return number < 3;
-});
-console.log(`Is every number in the array greater than 3? ${numbersEvery}`);
+// let numbersEvery = numbers.every(function (number) {
+//   return number < 3;
+// });
+// console.log(`Is every number in the array greater than 3? ${numbersEvery}`);
 
-// some()
-/* 
-  
-  - check if at least one element in an array meets the given condition
-  - this is useful for validating data stored in arrays especially when dealing with large amounts of data
-  - returns true value if at least one element meets the given condition
-  and false otherwise
-  - syntax: const result = arrayName.some(function(element){ return condition; });
+// // some()
+// /*
 
-*/
-let someValid = numbers.some(function (number) {
-  return number < 3;
-});
-console.log(`Result of some method:  ${someValid}`);
+//   - check if at least one element in an array meets the given condition
+//   - this is useful for validating data stored in arrays especially when dealing with large amounts of data
+//   - returns true value if at least one element meets the given condition
+//   and false otherwise
+//   - syntax: const result = arrayName.some(function(element){ return condition; });
 
-// combining the return from the every/ some  method may used in other statements to perform consecutive results
-if (someValid) {
-  console.log("At least one number in the array is less than 3");
-}
+// */
+// let someValid = numbers.some(function (number) {
+//   return number < 3;
+// });
+// console.log(`Result of some method:  ${someValid}`);
 
-// filter()
-/*
-  - returns new array that contains elements which meets the given condition
-	-return an empty array if no elements are found
-	-useful for filtering arrays elements with the given condition and shorten the syntax compared to using other arrays iteration methods
-  - syntax: const result = arrayName.filter(function(element){ return condition; });
+// // combining the return from the every/ some  method may used in other statements to perform consecutive results
+// if (someValid) {
+//   console.log("At least one number in the array is less than 3");
+// }
 
-*/
+// // filter()
+// /*
+//   - returns new array that contains elements which meets the given condition
+// 	-return an empty array if no elements are found
+// 	-useful for filtering arrays elements with the given condition and shorten the syntax compared to using other arrays iteration methods
+//   - syntax: const result = arrayName.filter(function(element){ return condition; });
 
-let filteredNumbers = numbers.filter(function (number) {
-  return number > 2;
-});
+// */
 
-console.log(`Original array: ${numbers}`);
+// let filteredNumbers = numbers.filter(function (number) {
+//   return number > 2;
+// });
 
-console.log(`Filtered numbers greater than 2: ${filteredNumbers}`);
+// console.log(`Original array: ${numbers}`);
 
-// No elements found
+// console.log(`Filtered numbers greater than 2: ${filteredNumbers}`);
 
-let filteredEmpty = numbers.filter(function (number) {
-  return (number = 0);
-});
+// // No elements found
 
-console.log(`Filtered empty array: ${filteredEmpty}`);
+// let filteredEmpty = numbers.filter(function (number) {
+//   return (number = 0);
+// });
 
-let filterNumbers = [];
+// console.log(`Filtered empty array: ${filteredEmpty}`);
 
-numbers.forEach(function (number) {
-  // console.log(number);
-  if (number > 2) {
-    filterNumbers.push(number);
-  }
-});
+// let filterNumbers = [];
 
-console.log(`Filtered number: ${filterNumbers}`);
+// numbers.forEach(function (number) {
+//   // console.log(number);
+//   if (number > 2) {
+//     filterNumbers.push(number);
+//   }
+// });
 
-// includes()
+// console.log(`Filtered number: ${filterNumbers}`);
 
-/* 
-		- includes() method checks if the argument passed can be found in the array
-				- returns Boolean which can be saved in a variable
-				    - returns true if the argument is found in the array
-						-returns false if its not
-						- syntax: arrayName.includes(searchElement);
-*/
+// // includes()
 
-let products = ["Mouse", "Monitor", "Keyboard", "AVR"];
+// /*
+// 		- includes() method checks if the argument passed can be found in the array
+// 				- returns Boolean which can be saved in a variable
+// 				    - returns true if the argument is found in the array
+// 						-returns false if its not
+// 						- syntax: arrayName.includes(searchElement);
+// */
 
-let productFound1 = products.includes("Mouse");
-console.log(productFound1);
+// let products = ["Mouse", "Monitor", "Keyboard", "AVR"];
 
-let productFound2 = products.includes("Headset");
-console.log(productFound2);
+// let productFound1 = products.includes("Mouse");
+// console.log(productFound1);
 
-/* 
+// let productFound2 = products.includes("Headset");
+// console.log(productFound2);
 
--method can be 'chained' using them one after another
-- the result of the method is used on the second method until all 'chained' methods have been resolved
--- how chaining resolves in our example:
-	1. the 'product' elements will be converted into all lowercase letters
-	2.the resulting lowercases string is used in the 'includes' method
-*/
+// /*
 
-let filteredProducts = products
-  .map((product) => product.toLowerCase())
-  .filter((product) => product.includes("a"));
+// -method can be 'chained' using them one after another
+// - the result of the method is used on the second method until all 'chained' methods have been resolved
+// -- how chaining resolves in our example:
+// 	1. the 'product' elements will be converted into all lowercase letters
+// 	2.the resulting lowercases string is used in the 'includes' method
+// */
 
-console.log(filteredProducts);
+// let filteredProducts = products
+//   .map((product) => product.toLowerCase())
+//   .filter((product) => product.includes("a"));
 
-let filteredProduct = products.filter(function (product) {
-  return product.toLowerCase().includes("a");
-});
-console.log(filteredProduct.map((product) => product.toLowerCase()));
+// console.log(filteredProducts);
 
-// reduce()
-/*
-		-valuates the elements from left to right and returns/reduces the array into a single value
-		- syntax: const result = arrayName.reduce(function(accumulator, currentValue, currentIndex, array){ return accumulator + currentValue; }, initialValue);
+// let filteredProduct = products.filter(function (product) {
+//   return product.toLowerCase().includes("a");
+// });
+// console.log(filteredProduct.map((product) => product.toLowerCase()));
 
-		- the 'accumulator' parameter  in the function stores the result to every iteration of the loop
-		- the 'currentValue' is the current/ next element in the array that is evaluated in each iteration of the loop
-		-how the reduces method works
-		   	1. the first/ result element in the array is stored in the accumulator parameter
-				2. the second/ result element in the array is stored in the currentValue parameter
-				3. an operation is performed on the two elements
-				4. the loop repeats step 1-3 until all elements been worked on
+// // reduce()
+// /*
+// 		-valuates the elements from left to right and returns/reduces the array into a single value
+// 		- syntax: const result = arrayName.reduce(function(accumulator, currentValue, currentIndex, array){ return accumulator + currentValue; }, initialValue);
 
-	*/
+// 		- the 'accumulator' parameter  in the function stores the result to every iteration of the loop
+// 		- the 'currentValue' is the current/ next element in the array that is evaluated in each iteration of the loop
+// 		-how the reduces method works
+// 		   	1. the first/ result element in the array is stored in the accumulator parameter
+// 				2. the second/ result element in the array is stored in the currentValue parameter
+// 				3. an operation is performed on the two elements
+// 				4. the loop repeats step 1-3 until all elements been worked on
 
-let sumNumbers = numbers.reduce(
-  (accumulator, currentValue) => accumulator + currentValue,
-  0
-);
+// 	*/
 
-let iteration = 0;
-let reduce = numbers.reduce(function (x, y) {
-  // used to track the current iteration count and accumulator / currentValue data
-  console.warn("Current iteration: " + ++iteration);
-  console.log("accumulator: " + x);
-  console.log("currentValue: " + y);
+// let sumNumbers = numbers.reduce(
+//   (accumulator, currentValue) => accumulator + currentValue,
+//   0
+// );
 
-  // the operation to reduce the array into a single value
-  return x + y;
-});
-console.log(`Current iteration: ${reduce}`);
+// let iteration = 0;
+// let reduce = numbers.reduce(function (x, y) {
+//   // used to track the current iteration count and accumulator / currentValue data
+//   console.warn("Current iteration: " + ++iteration);
+//   console.log("accumulator: " + x);
+//   console.log("currentValue: " + y);
 
-let list = ["Hello", "Again", "Love"];
+//   // the operation to reduce the array into a single value
+//   return x + y;
+// });
+// console.log(`Current iteration: ${reduce}`);
 
-let result = list.reduce(function (x, y) {
-  return x + " " + y;
-});
+// let list = ["Hello", "Again", "Love"];
 
-console.log(`Result of reduce ${result}`); // 'HelloAgainLove'
+// let result = list.reduce(function (x, y) {
+//   return x + " " + y;
+// });
+
+// console.log(`Result of reduce ${result}`); // 'HelloAgainLove'

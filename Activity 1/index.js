@@ -290,6 +290,7 @@ class Battle {
         `%c${this.trainer2.name} has lost the battle!`,
         "color: red; font-weight: bold; font-size: 20px;"
       );
+      this.trainer2.fullyHealAllPokemons();
       // Increment Trainer 1's loss count
       this.trainer2.losses += 1;
       console.log(
@@ -301,7 +302,7 @@ class Battle {
     }
   }
   startRoundRobinTournament(trainers) {
-    if (trainers.length < 2 || trainers.length > 5) {
+    if (trainers.length < 3 || trainers.length > 5) {
       console.log("This tournament format requires between 3 and 5 trainers.");
       return;
     }
@@ -314,15 +315,21 @@ class Battle {
     });
 
     let winners = [];
+
     let losers = [];
 
     // First round
     const battle1 = new Battle(trainers[0], trainers[1]);
     const winner1 = battle1.start();
     console.log(`Winner is: ${winner1.name}`);
-    const loser1 = winner1 === trainers[0] ? trainers[1] : trainers[0];
+    let loser1;
+    if (winner1 === trainers[0]) {
+      loser1 = trainers[1];
+    } else {
+      loser1 = trainers[0];
+    }
 
-    if (trainers.length >= 3) {
+    if (trainers.length > 3) {
       const battle2 = new Battle(trainers[2], trainers[3]);
       const winner2 = battle2.start();
       if (!winner2) {
@@ -330,8 +337,12 @@ class Battle {
         return;
       }
       console.log(`Winner is: ${winner2.name}`);
-      const loser2 = winner2 === trainers[2] ? trainers[3] : trainers[2];
-
+      let loser2;
+      if (winner2 === trainers[2]) {
+        loser2 = trainers[3];
+      } else {
+        loser2 = trainers[2];
+      }
       if (winner1) winners.push(winner1);
       if (winner2) winners.push(winner2);
       if (loser1) losers.push(loser1);
@@ -348,6 +359,7 @@ class Battle {
       const loser3 = winner3 === trainers[0] ? trainers[2] : trainers[0];
 
       if (winner1) winners.push(winner1);
+
       if (winner2) winners.push(winner2);
       if (winner3) winners.push(winner3);
       if (loser1) losers.push(loser1);
@@ -370,9 +382,13 @@ class Battle {
       winners.push(winner1);
       losers.push(loser1);
     }
+    // console.log("Winners:");
+    // winners.forEach((winner) => {
+    //   console.log(winner);
+    // });
 
     // Second round
-    if (winners.length >= 1) {
+    if (winners.length > 1) {
       console.log("Second round:");
       const battle3 = new Battle(winners[0], winners[1]);
       const finalWinner = battle3.start();
@@ -385,54 +401,66 @@ class Battle {
       const waitingLoser = finalWinner === winners[0] ? winners[1] : winners[0];
 
       // Re-heal losers for the next round
-      losers[0].fullyHealAllPokemons();
-      losers[1].fullyHealAllPokemons();
+      if (losers[0]) losers[0].fullyHealAllPokemons();
+      if (losers[1]) losers[1].fullyHealAllPokemons();
 
       // Fourth round Battle of the loser
-      const battle4 = new Battle(losers[0], losers[1]);
-      const loserWinner = battle4.start();
-      if (!loserWinner) {
-        console.error("Battle 4 did not produce a winner.");
-        return;
-      }
-      const eliminatedTrainer =
-        loserWinner === losers[0] ? losers[1] : losers[0];
-
-      if (eliminatedTrainer) {
-        console.log(
-          `%c${eliminatedTrainer.name} has been eliminated!`,
-          "color: red; font-weight: bold; font-size: 20px;"
-        );
-      }
-
-      // Third round
-      if (trainers.length === 5) {
-        console.log("Third round:");
-        const battle5 = new Battle(loserWinner, trainers[4]);
-        const finalLoserWinner = battle5.start();
-        if (!finalLoserWinner) {
-          console.error("Battle 5 did not produce a winner.");
+      if (losers.length > 1) {
+        const battle4 = new Battle(losers[0], losers[1]);
+        const loserWinner = battle4.start();
+        if (!loserWinner) {
+          console.error("Battle 4 did not produce a winner.");
           return;
         }
+        const eliminatedTrainer =
+          loserWinner === losers[0] ? losers[1] : losers[0];
 
-        // Final round
-        console.log("Final round:");
-        waitingLoser.fullyHealAllPokemons();
-        const finalBattle = new Battle(waitingTrainer, finalLoserWinner);
-        const champion = finalBattle.start();
-        if (!champion) {
-          console.error("Final battle did not produce a champion.");
-          return;
+        if (eliminatedTrainer) {
+          console.log(
+            `%c${eliminatedTrainer.name} has been eliminated!`,
+            "color: red; font-weight: bold; font-size: 20px;"
+          );
         }
 
-        console.log(
-          `%c🎉🏆The Champion of the tournament is ${champion.name}!🏆🎉`,
-          "color: green; font-weight: bold; font-size: 20px;margin-right:26%; margin-left:26%;margin-top:30px; margin-bottom:30px; background: white; border: 1px solid black; border-radius: 4px; padding-top:30px; padding-bottom:30px; padding-left:30px; padding-right:30px; text-align: center"
-        );
+        // Third round
+        if (trainers.length === 5) {
+          console.log("Third round:");
+          const battle5 = new Battle(loserWinner, trainers[4]);
+          const finalLoserWinner = battle5.start();
+          if (!finalLoserWinner) {
+            console.error("Battle 5 did not produce a winner.");
+            return;
+          }
+
+          // Final round
+          console.log("Final round:");
+          waitingLoser.fullyHealAllPokemons();
+          const finalBattle = new Battle(waitingTrainer, finalLoserWinner);
+          const champion = finalBattle.start();
+          if (!champion) {
+            console.error("Final battle did not produce a champion.");
+            return;
+          }
+
+          console.log(
+            `%c🎉🏆The Champion of the tournament is ${champion.name}!🏆🎉`,
+            "color: green; font-weight: bold; font-size: 20px;margin-right:26%; margin-left:26%;margin-top:30px; margin-bottom:30px; background: white; border: 1px solid black; border-radius: 4px; padding-top:30px; padding-bottom:30px; padding-left:30px; padding-right:30px; text-align: center"
+          );
+        } else {
+          // Final round for 4 trainers
+          console.log("Final round:");
+          const finalBattle = new Battle(waitingTrainer, loserWinner);
+          const champion = finalBattle.start();
+
+          console.log(
+            `%c🎉🏆The Champion of the tournament is ${champion.name}!🏆🎉`,
+            "color: green; font-weight: bold; font-size: 20px;margin-right:26%; margin-left:26%;margin-top:30px; margin-bottom:30px; background: white; border: 1px solid black; border-radius: 4px; padding-top:30px; padding-bottom:30px; padding-left:30px; padding-right:30px; text-align: center"
+          );
+        }
       } else {
-        // Final round for 4 trainers
+        // Final round for 3 trainers
         console.log("Final round:");
-        const finalBattle = new Battle(waitingTrainer, loserWinner);
+        const finalBattle = new Battle(winners[0], waitingLoser);
         const champion = finalBattle.start();
 
         console.log(
@@ -441,7 +469,7 @@ class Battle {
         );
       }
     } else {
-      // Final round for 2 or 3 trainers
+      // Final round for 2 trainers
       console.log("Final round:");
       const finalBattle = new Battle(winners[0], losers[0]);
       const champion = finalBattle.start();
@@ -455,10 +483,10 @@ class Battle {
 }
 
 function getTrainerCount() {
-  let input = prompt("Please enter the number of Trainers (4-5):");
+  let input = prompt("Please enter the number of Trainers (3-5):");
   let trainerCount = parseInt(input);
 
-  if (trainerCount >= 4 && trainerCount <= 5) {
+  if (trainerCount >= 3 && trainerCount <= 5) {
     return trainerCount;
   } else {
     alert("Invalid number of trainers. Please enter a number between 3 and 5.");
@@ -468,13 +496,13 @@ function getTrainerCount() {
 
 // Function to handle Pokémon input
 function getPokemonCount() {
-  let input = prompt("Please enter the number of Pokémon per trainer (3-5):");
+  let input = prompt("Please enter the number of Pokémon per Trainer (3-5):");
   let pokemonCount = parseInt(input);
 
   if (pokemonCount >= 3 && pokemonCount <= 5) {
     return pokemonCount;
   } else {
-    alert("Invalid number of Pokemon. Please enter a number between 3 and 5.");
+    alert("Invalid number of Pokémon. Please enter a number between 3 and 5.");
     return getPokemonCount();
   }
 }
@@ -545,6 +573,7 @@ function startTournament() {
     const selectedTrainer = allTrainers[randomIndex];
     if (!selectedTrainers.includes(selectedTrainer)) {
       selectedTrainers.push(selectedTrainer);
+      // console.log(selectedTrainers);
     }
   }
 
