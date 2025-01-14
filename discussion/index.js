@@ -1,4 +1,21 @@
 console.log("I'm not a Developer");
+
+class Engine {
+  constructors(type) {
+    this.type = type;
+  }
+}
+class Car {
+  constructor(make) {
+    this.make = make;
+  }
+  getMake() {
+    return this.make;
+  }
+}
+let car1 = new Car("Toyota");
+let car2 = new Car("Honda");
+console.log(car1.getMake(), car2.getMake());
 /* 
 		Data structures
 				- Used to organize and manage data effectively
@@ -27,7 +44,7 @@ console.log("I'm not a Developer");
 						- syntax: arrayName.shift();
 				-splice()
 				    - removes elements from an array and returns them as an array
-						- syntax: arrayName.splice(index, deleteCount,items);
+				
 				-sort()
 				 		- rearranges the elements in alphanumeric order
 						- syntax: arrayName.sort();
@@ -47,63 +64,64 @@ console.log("I'm not a Developer");
 				- reduceRight()
 
 */
+//- syntax: arrayName.splice(index, deleteCount,items);
+// let beatles = ["John", "Doe", "George", "Greg"];
+// console.log(beatles);
+// let splice = beatles.splice(1, 2, "foo");
 
-let beatles = ["John", "Doe", "George", "Greg"];
-console.log("Current array: ");
-console.log(beatles);
+// console.log(`Spliced array: ${splice}`);
+// console.log(beatles);
+// console.log("Current array: ");
+// console.log(beatles);
 
-let beatlesLength = beatles.push("Ringo");
-console.log(beatlesLength);
-console.log("Update array: ");
-console.log(beatles);
+// let beatlesLength = beatles.push("Ringo");
+// console.log(beatlesLength);
+// console.log("Update array: ");
+// console.log(beatles);
 
-// adding multiple elements to the array
+// // adding multiple elements to the array
 
-beatles.push("Paul", "Pete");
-console.log(beatles);
+// beatles.push("Paul", "Pete");
+// console.log(beatles);
 
-// pop
-let removedMembers = beatles.pop();
-console.log(removedMembers);
-console.log("Mutated array");
-console.log(removedMembers);
+// // pop
+// let removedMembers = beatles.pop();
+// console.log(removedMembers);
+// console.log("Mutated array");
+// console.log(removedMembers);
 
-// shift elements
-let anotherMembers = beatles.shift();
-console.log(anotherMembers);
-console.log("Mutated array");
-console.log(beatles);
+// // shift elements
+// let anotherMembers = beatles.shift();
+// console.log(anotherMembers);
+// console.log("Mutated array");
+// console.log(beatles);
 
 // splice
-beatles.splice(1, 1, "foo");
-
-console.log("Spliced array");
-console.log(beatles);
 
 // sort
-let sort = beatles.sort();
-console.log(sort);
-console.log("Sorted array");
-console.log(beatles);
+// let sort = beatles.sort();
+// console.log(sort);
+// console.log("Sorted array");
+// console.log(beatles);
 
-// reverse
-let reverse = beatles.reverse();
-console.log(reverse);
-console.log("Reversed array");
-console.log(beatles);
+// // reverse
+// let reverse = beatles.reverse();
+// console.log(reverse);
+// console.log("Reversed array");
+// console.log(beatles);
 
-//non-mutator Methods
+// //non-mutator Methods
 
 let countries = ["US", "PH", "CAN", "JP", "TH"];
 
-// indexOf()
-/* 
-	indexOf - returns the index number of the first matching element found in the array
-	-if no match was found, returns -1
-	-the search proccess will done from the first element proceeding to the last element
-	- syntax: arrayName.indexOf(searchElement);
-	- syntax: arrayName.indexOf(searchElement, fromIndex);
-*/
+// // indexOf()
+// /*
+// 	indexOf - returns the index number of the first matching element found in the array
+// 	-if no match was found, returns -1
+// 	-the search proccess will done from the first element proceeding to the last element
+// 	- syntax: arrayName.indexOf(searchElement);
+// 	- syntax: arrayName.indexOf(searchElement, fromIndex);
+// */
 console.log(countries);
 let firstIndex = countries.indexOf("TH");
 console.log("First: " + firstIndex);
@@ -111,62 +129,62 @@ console.log("First: " + firstIndex);
 let invalidCountry = countries.indexOf("BR");
 console.log("Invalid country: " + invalidCountry);
 
-// lastIndexOf()
+// // lastIndexOf()
 
-/* 
-  lastIndexOf - returns the index number of the last matching element found in the array
-  - if no match was found, returns -1
-  - the search process will done from the last element proceeding to the first element
-  - syntax: arrayName.lastIndexOf(searchElement);
-	- syntax: arrayName.lastIndexOf(searchElement, fromIndex);
+// /*
+//   lastIndexOf - returns the index number of the last matching element found in the array
+//   - if no match was found, returns -1
+//   - the search process will done from the last element proceeding to the first element
+//   - syntax: arrayName.lastIndexOf(searchElement);
+// 	- syntax: arrayName.lastIndexOf(searchElement, fromIndex);
 
-*/
-// Getting the index number of the last matching element found in the array
+// */
+// // Getting the index number of the last matching element found in the array
 let lastIndex = countries.lastIndexOf("PH");
 console.log("Last: " + lastIndex);
 
 let lastIndexStart = countries.lastIndexOf("PH", 6);
 console.log("Last: " + lastIndexStart);
 
-let invalidLastIndex = countries.lastIndexOf("BR");
-console.log("Invalid last index: " + invalidLastIndex);
+// let invalidLastIndex = countries.lastIndexOf("BR");
+// console.log("Invalid last index: " + invalidLastIndex);
 
-//slice()
-/* 
-		-portion/slices element from an array and returns a new array
-		- syntax: arrayName.slice(beginIndex, endIndex);
-		- syntax: arrayName.slice(beginIndex);
+// //slice()
+// /*
+// 		-portion/slices element from an array and returns a new array
+// 		- syntax: arrayName.slice(beginIndex, endIndex);
+// 		- syntax: arrayName.slice(beginIndex);
 
-*/
+// */
 
-// slicing off elements from a specified index to the last element
+// // slicing off elements from a specified index to the last element
 console.log(countries);
 let slice = countries.slice(1);
 console.log(`Sliced array: ${slice}`);
 
-// slicing off elements from the to a specified index
+// // slicing off elements from the to a specified index
 
 let sliceStart = countries.slice(1, 2);
 console.log(`Sliced array: ${sliceStart}`);
 
-// toString
-/*
+// // toString
+// /*
 
-		toString() - converts an array or object into a string
-		- syntax: arrayName.toString();
+// 		toString() - converts an array or object into a string
+// 		- syntax: arrayName.toString();
 
-*/
+// */
 
-let stringArray = countries.toString();
-console.log(`String array: ${stringArray}`);
+// let stringArray = countries.toString();
+// console.log(`String array: ${stringArray}`);
 
-// concat()
-/*
-	-combine two arrays and returns combine result
-	- syntax: arrayA.concat(arrayB);
-	- syntax: arrayA.concat(elementB);
+// // concat()
+// /*
+// 	-combine two arrays and returns combine result
+// 	- syntax: arrayA.concat(arrayB);
+// 	- syntax: arrayA.concat(elementB);
 
-*/
+// */
 
 let arrayA = ["Apple", "Banana"];
 let arrayB = ["Cherry", "Dragon Fruit"];
@@ -175,90 +193,92 @@ let arrayC = ["Orange", "Grapes"];
 let combinedArray = arrayA.concat(arrayB);
 console.log(`Combined array: ${combinedArray}`);
 
-let combinedArray1 = arrayA.concat(arrayB, arrayC);
-console.log(`Combined array: ${combinedArray1}`);
+console.log(combinedArray);
 
-// combining arrays with elements
-let combinedArray2 = arrayA.concat("Element");
-console.log(`Combined array: ${combinedArray2}`);
+// let combinedArray1 = arrayA.concat(arrayB, arrayC);
+// console.log(`Combined array: ${combinedArray1}`);
 
-// join()
-/*
-  - returns an array as a string separated by specified separator
-  - syntax: arrayName.join(separator);
-  - syntax: arrayName.join();
+// // combining arrays with elements
+// let combinedArray2 = arrayA.concat("Element");
+// console.log(`Combined array: ${combinedArray2}`);
 
-*/
+// // join()
+// /*
+//   - returns an array as a string separated by specified separator
+//   - syntax: arrayName.join(separator);
+//   - syntax: arrayName.join();
 
-let user = ["Nicole", "John", "Car", "Bob"];
-console.log(`User: ${user}`);
-console.log(user.join());
-console.log(user.join(" "));
+// */
 
-// Iteration Methods
-/*
-  - iteration method are loops designed to perform repetitive 
-	task on array
-	    -iteration method loops overall items in an array
-			-useful for manipulating array data resulting in complex tasks
-			- arrays iteration method normally works with a function
-			supplied as an arguments
-*/
+// let user = ["Nicole", "John", "Car", "Bob"];
+// console.log(`User: ${user}`);
+// console.log(user.join());
+// console.log(user.join(" "));
 
-/*	
-  forEach() - executes a provided function once for each element in an array
-	-similar to a for loop that iterates on each array element
-	- for each item in the array, the anonymous function
-	passed in the forEach()method will be run
-				- the anonymous function is able to received the
-				current item being iterated or loop over by assigning parameters
-				-variable names for arrays are normally writted in the plural form
-				- syntax: arrayName.forEach(function(element){});
-  - syntax: arrayName.forEach(function(currentValue, index, array){});
+// // Iteration Methods
+// /*
+//   - iteration method are loops designed to perform repetitive
+// 	task on array
+// 	    -iteration method loops overall items in an array
+// 			-useful for manipulating array data resulting in complex tasks
+// 			- arrays iteration method normally works with a function
+// 			supplied as an arguments
+// */
 
-*/
+// /*
+//   forEach() - executes a provided function once for each element in an array
+// 	-similar to a for loop that iterates on each array element
+// 	- for each item in the array, the anonymous function
+// 	passed in the forEach()method will be run
+// 				- the anonymous function is able to received the
+// 				current item being iterated or loop over by assigning parameters
+// 				-variable names for arrays are normally writted in the plural form
+// 				- syntax: arrayName.forEach(function(element){});
+//   - syntax: arrayName.forEach(function(currentValue, index, array){});
 
+// */
+
+// // combinedArray.forEach(function (tasks) {
+// //   console.log(tasks);
+// // });
+
+// // using forEach with conditional statements
+// let filteredTasks = [];
+
+// /*
+
+// 	- it's a good practice to print the current element in the console when working with array iteration methods to have an idea of what information is being worked for each iteration of the loop
+// 	- creating a separate variable to store results of array iteration methods are also good practice to avoid confusion
+// 	by modifying the original array
+
+// */
+// console.log("================================");
 // combinedArray.forEach(function (tasks) {
 //   console.log(tasks);
+
+//   // if the element/string's length is greater than 10 characters
+//   if (tasks.length > 10) {
+//     // add the element to the filtered array
+//     filteredTasks.push(tasks);
+//   }
 // });
 
-// using forEach with conditional statements
-let filteredTasks = [];
+// console.log(`Results of filtered tasks: ${filteredTasks}`);
 
-/* 
+// // map
+// /*
+//  -iterates on each element and return new array with different values depending on the result of the function operation
 
-	- it's a good practice to print the current element in the console when working with array iteration methods to have an idea of what information is being worked for each iteration of the loop
-	- creating a separate variable to store results of array iteration methods are also good practice to avoid confusion
-	by modifying the original array
-
-*/
-console.log("================================");
-combinedArray.forEach(function (tasks) {
-  console.log(tasks);
-
-  // if the element/string's length is greater than 10 characters
-  if (tasks.length > 10) {
-    // add the element to the filtered array
-    filteredTasks.push(tasks);
-  }
-});
-
-console.log(`Results of filtered tasks: ${filteredTasks}`);
-
-// map
-/*
- -iterates on each element and return new array with different values depending on the result of the function operation
-
- -this is useful for performing tasks where mutating/changing the element are required
- -unlike the forEach method, the map method requires the use of a 'return' statement in order to create another array with the perform operation
- - syntax: arrayName.map(function(element){ return expression; });
-*/
-let numbers = [1, 2, 3, 4, 5];
-let numbersMap = numbers.map(function (number) {
-  return number * number;
-});
-console.log(`Original array: ${numbers}`);
-console.log(`Results of numbers multiplied by themselves: ${numbersMap}`);
+//  -this is useful for performing tasks where mutating/changing the element are required
+//  -unlike the forEach method, the map method requires the use of a 'return' statement in order to create another array with the perform operation
+//  - syntax: arrayName.map(function(element){ return expression; });
+// */
+// let numbers = [1, 2, 3, 4, 5];
+// let numbersMap = numbers.map(function (number) {
+//   return number * number;
+// });
+// console.log(`Original array: ${numbers}`);
+// console.log(`Results of numbers multiplied by themselves: ${numbersMap}`);
 
 // map() vs forEach()
 

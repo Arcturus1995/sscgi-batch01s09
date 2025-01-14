@@ -5,7 +5,7 @@ console.log(
 
 // Class pokemon
 class Pokemon {
-  constructor(name, type, level, hp, defense) {
+  constructor(name, type, level, hp, defense, speed) {
     this.name = name;
     this.type = type;
     this.level = level;
@@ -14,6 +14,7 @@ class Pokemon {
     this.defense = defense || 0;
     this.temporaryDefense = 0;
     this.hasLeveledUp = false;
+    this.speed = speed;
   }
 
   attack(opponent) {
@@ -86,7 +87,8 @@ class Pokemon {
       console.log(`${this.name} lands a damage! ${damage}`);
       console.log(`💥${this.name} lands a critical hit! ${criticalDamages}💥`);
       this.level += 1;
-      this.hasLeveledUp = true; // Set the flag to true when the Pokémon levels up
+      // Set the flag to true when the Pokémon levels up
+      this.hasLeveledUp = true;
       console.log(` ${this.name} has leveled up! New level ${this.level}`);
       return damage + criticalDamages;
     }
@@ -96,8 +98,8 @@ class Pokemon {
 
 // Define Pokémon subclasses (e.g., Electric, Fire, Water, etc.)
 class ElectricPokemon extends Pokemon {
-  constructor(name, level, hp, defense) {
-    super(name, "Electric", level, hp, defense);
+  constructor(name, level, hp, defense, speed) {
+    super(name, "Electric", level, hp, defense, speed);
   }
 
   specialAttack(opponent, damage) {
@@ -110,8 +112,8 @@ class ElectricPokemon extends Pokemon {
 }
 
 class FirePokemon extends Pokemon {
-  constructor(name, level, hp, defense) {
-    super(name, "Fire", level, hp, defense);
+  constructor(name, level, hp, defense, speed) {
+    super(name, "Fire", level, hp, defense, speed);
   }
 
   specialAttack(opponent, damage) {
@@ -124,8 +126,8 @@ class FirePokemon extends Pokemon {
 }
 
 class EarthPokemon extends Pokemon {
-  constructor(name, level, hp, defense) {
-    super(name, "Earth", level, hp, defense);
+  constructor(name, level, hp, defense, speed) {
+    super(name, "Earth", level, hp, defense, speed);
   }
 
   specialAttack(opponent, damage) {
@@ -138,8 +140,8 @@ class EarthPokemon extends Pokemon {
 }
 
 class WindPokemon extends Pokemon {
-  constructor(name, level, hp, defense) {
-    super(name, "Wind", level, hp, defense);
+  constructor(name, level, hp, defense, speed) {
+    super(name, "Wind", level, hp, defense, speed);
   }
 
   specialAttack(opponent, damage) {
@@ -152,8 +154,8 @@ class WindPokemon extends Pokemon {
 }
 
 class WaterPokemon extends Pokemon {
-  constructor(name, level, hp, defense) {
-    super(name, "Water", level, hp, defense);
+  constructor(name, level, hp, defense, speed) {
+    super(name, "Water", level, hp, defense, speed);
   }
 
   specialAttack(opponent, damage) {
@@ -188,7 +190,6 @@ class Trainer {
   }
 }
 
-// Class battle of the trainers
 class Battle {
   constructor(trainer1, trainer2) {
     this.trainer1 = trainer1;
@@ -212,32 +213,22 @@ class Battle {
 
       // Inner loop continues as long as both current Pokémon have HP greater than 0
       while (trainer1Pokemon.hp > 0 && trainer2Pokemon.hp > 0) {
-        // Random chance (20%) for Trainer 1's Pokémon to heal
-        let randomHeal = Math.random() < 0.2;
-        if (randomHeal) {
-          let healAmount = Math.floor(Math.random() * 20) + 10;
-          console.log(`${trainer1Pokemon.name} decides to heal! ${healAmount}`);
-          trainer1Pokemon.heal(healAmount);
+        // Determine which Pokémon attacks first based on speed
+        if (trainer1Pokemon.speed >= trainer2Pokemon.speed) {
+          // Trainer 1's Pokémon attacks first
+          this.pokemonTurn(trainer1Pokemon, trainer2Pokemon);
+          if (trainer2Pokemon.hp > 0) {
+            this.pokemonTurn(trainer2Pokemon, trainer1Pokemon);
+          }
         } else {
-          // Trainer 1's Pokemon attacks Trainer 2's Pokemon
-          trainer1Pokemon.attack(trainer2Pokemon);
-        }
-        // If Trainer 2's Pokemon is still alive, it gets a turn
-        if (trainer2Pokemon.hp > 0) {
-          // Random chance (20%) for Trainer 1's Pokémon to heal
-          let randomHeal = Math.random() < 0.2;
-          if (randomHeal) {
-            let healAmount = Math.floor(Math.random() * 20) + 10;
-            console.log(
-              `${trainer2Pokemon.name} decides to heal! ${healAmount}`
-            );
-            trainer2Pokemon.heal(healAmount);
-          } else {
-            // Trainer 2's Pokemon attacks Trainer 1's Pokémon
-            trainer2Pokemon.attack(trainer1Pokemon);
+          // Trainer 2's Pokémon attacks first
+          this.pokemonTurn(trainer2Pokemon, trainer1Pokemon);
+          if (trainer1Pokemon.hp > 0) {
+            this.pokemonTurn(trainer1Pokemon, trainer2Pokemon);
           }
         }
       }
+
       // Check if Trainer 1's Pokemon has fainted
       if (trainer1Pokemon.hp <= 0) {
         console.log(`${trainer1Pokemon.name} has fainted!`);
@@ -252,9 +243,11 @@ class Battle {
         trainer1Pokemon.fullyHeal();
         trainer1Pokemon = this.trainer1.selectNextPokemon(trainer1Pokemon);
       }
+
       // Check if Trainer 2's Pokemon has fainted
       if (trainer2Pokemon.hp <= 0) {
-        // Select the next available Pokemon for Trainer
+        console.log(`${trainer2Pokemon.name} has fainted!`);
+        // Select the next available Pokemon for Trainer 2
         trainer2Pokemon = this.trainer2.selectNextPokemon(trainer2Pokemon);
       } else {
         // Trainer 2's Pokemon wins, fully heal it and select the next available Pokemon
@@ -283,24 +276,40 @@ class Battle {
       );
       // Fully heal all Pokémon of Trainer 2
       this.trainer2.fullyHealAllPokemons();
+      this.trainer1.fullyHealAllPokemons(); // Fully heal all lost Pokémon of Trainer 1
       return this.trainer2; // Trainer 2 wins
-      // Check if Trainer 2 has no more available Pokémon
     } else if (!trainer2Pokemon) {
       console.log(
         `%c${this.trainer2.name} has lost the battle!`,
         "color: red; font-weight: bold; font-size: 20px;"
       );
-      this.trainer2.fullyHealAllPokemons();
-      // Increment Trainer 1's loss count
+      // Increment Trainer 2's loss count
       this.trainer2.losses += 1;
       console.log(
         `%c🏆${this.trainer1.name} has win the battle!🏆`,
         "color: green; font-weight: bold; font-size:25px; margin-right:26%; margin-left:26%; margin-top:30px; margin-bottom:30px;background: white; border: 1px solid black; border-radius: 4px; padding-top:30px; padding-bottom:30px; padding-left:30px; padding-right:30px;"
       );
+      // Fully heal all Pokémon of Trainer 1
       this.trainer1.fullyHealAllPokemons();
+      this.trainer2.fullyHealAllPokemons(); // Fully heal all lost Pokémon of Trainer 2
       return this.trainer1; // Trainer 1 wins
     }
   }
+
+  // Function to handle a Pokémon's turn
+  pokemonTurn(attacker, defender) {
+    // Random chance (20%) for the attacking Pokémon to heal
+    let randomHeal = Math.random() < 0.2;
+    if (randomHeal) {
+      let healAmount = Math.floor(Math.random() * 20) + 10;
+      console.log(`${attacker.name} decides to heal! ${healAmount}`);
+      attacker.heal(healAmount);
+    } else {
+      // The attacking Pokémon attacks the defending Pokémon
+      attacker.attack(defender);
+    }
+  }
+
   startRoundRobinTournament(trainers) {
     if (trainers.length < 3 || trainers.length > 5) {
       console.log("This tournament format requires between 3 and 5 trainers.");
@@ -313,9 +322,9 @@ class Battle {
         return;
       }
     });
-
+    // stored the winner of the game
     let winners = [];
-
+    // stored the loser of the game
     let losers = [];
 
     // First round
@@ -359,7 +368,6 @@ class Battle {
       const loser3 = winner3 === trainers[0] ? trainers[2] : trainers[0];
 
       if (winner1) winners.push(winner1);
-
       if (winner2) winners.push(winner2);
       if (winner3) winners.push(winner3);
       if (loser1) losers.push(loser1);
@@ -370,6 +378,7 @@ class Battle {
       const eliminatedTrainer = losers.find(
         (trainer) => losers.filter((t) => t === trainer).length === 2
       );
+
       if (eliminatedTrainer) {
         console.log(
           `%c${eliminatedTrainer.name} has been eliminated!`,
@@ -382,14 +391,37 @@ class Battle {
       winners.push(winner1);
       losers.push(loser1);
     }
-    // console.log("Winners:");
-    // winners.forEach((winner) => {
-    //   console.log(winner);
-    // });
+
+    // Log the winners and losers
+    console.log(
+      `%cWinners:`,
+      "font-size: 20px; color: green; background-color: lightgray; text-align: center; margin-right:50%; margin-left: 30%; padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 12px;"
+    );
+    winners.forEach((trainer) => {
+      console.log(
+        `%c${trainer.name} (Status: Winner)`,
+        "font-size: 18px; color: green; background-color: lightgray; text-align: center;padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 5px;"
+      );
+    });
+
+    console.log(
+      `%cLosers:`,
+      "font-size: 20px; color: red; background-color: lightgray; text-align: center; margin-right:50%; margin-left: 30%; padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 12px;"
+    );
+    losers.forEach((trainer) => {
+      console.log(
+        `%c${trainer.name} (Status: Loser)`,
+        "font-size: 18px; color: red; background-color: lightgray; text-align: center; margin: 10px 0; padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 5px;"
+      );
+    });
 
     // Second round
+    // If there are more than one win, conduct a battle between the first two losers
     if (winners.length > 1) {
-      console.log("Second round:");
+      console.log(
+        `%cSecond round:`,
+        "font-size: 18px; color: green; background-color: lightgray; text-align: center;padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 5px;"
+      );
       const battle3 = new Battle(winners[0], winners[1]);
       const finalWinner = battle3.start();
       if (!finalWinner) {
@@ -400,11 +432,12 @@ class Battle {
         finalWinner === winners[0] ? winners[0] : winners[1];
       const waitingLoser = finalWinner === winners[0] ? winners[1] : winners[0];
 
-      // Re-heal losers for the next round
-      if (losers[0]) losers[0].fullyHealAllPokemons();
-      if (losers[1]) losers[1].fullyHealAllPokemons();
-
       // Fourth round Battle of the loser
+      // If there are more than one loser, conduct a battle between the first two losers
+      console.log(
+        `%cBattle of loser bracket`,
+        "font-size: 18px; color: red; background-color: #1c7ed6; text-align: center;padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 5px; margin-right: 26%; margin-left:26%"
+      );
       if (losers.length > 1) {
         const battle4 = new Battle(losers[0], losers[1]);
         const loserWinner = battle4.start();
@@ -412,6 +445,8 @@ class Battle {
           console.error("Battle 4 did not produce a winner.");
           return;
         }
+
+        //Determine the eliminated trainer based on the loser of the battle
         const eliminatedTrainer =
           loserWinner === losers[0] ? losers[1] : losers[0];
 
@@ -481,9 +516,11 @@ class Battle {
     }
   }
 }
-
 function getTrainerCount() {
-  let input = prompt("Please enter the number of Trainers (3-5):");
+  let input = prompt(
+    "Please enter the number of Trainers (3-5):",
+    "Please enter the number of Trainers (3-5)"
+  );
   let trainerCount = parseInt(input);
 
   if (trainerCount >= 3 && trainerCount <= 5) {
@@ -496,7 +533,10 @@ function getTrainerCount() {
 
 // Function to handle Pokémon input
 function getPokemonCount() {
-  let input = prompt("Please enter the number of Pokémon per Trainer (3-5):");
+  let input = prompt(
+    "Please enter the number of Pokémon per Trainer (3-5):",
+    "Please enter the number of Pokémon per Trainer (3-5):"
+  );
   let pokemonCount = parseInt(input);
 
   if (pokemonCount >= 3 && pokemonCount <= 5) {
@@ -511,36 +551,186 @@ function getPokemonCount() {
 function assignPokemons(trainers, pokemonCount) {
   let availablePokemons = [
     // Electric pokemon
-    new ElectricPokemon("Volt", 10, 100, Math.floor(Math.random() * 6)),
-    new ElectricPokemon("Raikou ", 10, 100, Math.floor(Math.random() * 6)),
-    new ElectricPokemon("Pikachu", 10, 100, Math.floor(Math.random() * 6)),
-    new ElectricPokemon("Gust", 10, 100, Math.floor(Math.random() * 6)),
-    new ElectricPokemon("Regieleki", 10, 100, Math.floor(Math.random() * 6)),
+    new ElectricPokemon(
+      "Volt",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new ElectricPokemon(
+      "Raikou ",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new ElectricPokemon(
+      "Pikachu",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new ElectricPokemon(
+      "Gust",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new ElectricPokemon(
+      "Regieleki",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
     // Fire pokemon
-    new FirePokemon("Charmander", 10, 100, Math.floor(Math.random() * 6)),
-    new FirePokemon("Moltres", 10, 100, Math.floor(Math.random() * 6)),
-    new FirePokemon("Reshiram", 10, 100, Math.floor(Math.random() * 6)),
-    new FirePokemon("Flareon", 10, 100, Math.floor(Math.random() * 6)),
-    new FirePokemon("Chi-Yu", 10, 100, Math.floor(Math.random() * 6)),
+    new FirePokemon(
+      "Charmander",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new FirePokemon(
+      "Moltres",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new FirePokemon(
+      "Reshiram",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new FirePokemon(
+      "Flareon",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new FirePokemon(
+      "Chi-Yu",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
     // water pokemon
-    new WaterPokemon("Squirtle", 10, 100, Math.floor(Math.random() * 6)),
-    new WaterPokemon("Palkia", 10, 100, Math.floor(Math.random() * 6)),
-    new WaterPokemon("Manaphy", 10, 100, Math.floor(Math.random() * 6)),
-    new WaterPokemon("Blastoise", 10, 100, Math.floor(Math.random() * 6)),
-    new WaterPokemon("Pelipper", 10, 100, Math.floor(Math.random() * 6)),
+    new WaterPokemon(
+      "Squirtle",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new WaterPokemon(
+      "Palkia",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new WaterPokemon(
+      "Manaphy",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new WaterPokemon(
+      "Blastoise",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new WaterPokemon(
+      "Pelipper",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
     //earth pokemon
-    new EarthPokemon("Bulbasaur", 10, 100, Math.floor(Math.random() * 6)),
-    new EarthPokemon("Zygarde ", 10, 100, Math.floor(Math.random() * 6)),
-    new EarthPokemon("Garchomp", 10, 100, Math.floor(Math.random() * 6)),
-    new EarthPokemon("Palossand", 10, 100, Math.floor(Math.random() * 6)),
-    new EarthPokemon("Sandile", 10, 100, Math.floor(Math.random() * 6)),
+    new EarthPokemon(
+      "Bulbasaur",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new EarthPokemon(
+      "Zygarde ",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new EarthPokemon(
+      "Garchomp",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new EarthPokemon(
+      "Palossand",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new EarthPokemon(
+      "Sandile",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
 
     // wind pokemon
-    new WindPokemon("Tornadus", 10, 100, Math.floor(Math.random() * 6)),
-    new WindPokemon("Rayquaza", 10, 100, Math.floor(Math.random() * 6)),
-    new WindPokemon("Lugia", 10, 100, Math.floor(Math.random() * 6)),
-    new WindPokemon("Noivern", 10, 100, Math.floor(Math.random() * 6)),
-    new WindPokemon("Swellow", 10, 100, Math.floor(Math.random() * 6)),
+    new WindPokemon(
+      "Tornadus",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new WindPokemon(
+      "Rayquaza",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new WindPokemon(
+      "Lugia",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new WindPokemon(
+      "Noivern",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
+    new WindPokemon(
+      "Swellow",
+      10,
+      100,
+      Math.floor(Math.random() * 6 + 1),
+      Math.floor(Math.random() * 6 + 1)
+    ),
   ];
 
   trainers.forEach((trainer) => {
@@ -573,24 +763,96 @@ function startTournament() {
     const selectedTrainer = allTrainers[randomIndex];
     if (!selectedTrainers.includes(selectedTrainer)) {
       selectedTrainers.push(selectedTrainer);
-      // console.log(selectedTrainers);
     }
   }
 
-  console.log("Selected Trainers:");
-  selectedTrainers.forEach((trainer) => console.log(trainer.name));
+  console.log(
+    "%cSelected Trainers:",
+    "color: white; background-color: #007bff; font-weight: bold; font-size: 16px; padding: 5px; border-radius: 5px;"
+  );
+  selectedTrainers.forEach((trainer) =>
+    console.log(
+      `%c${trainer.name}`,
+      "color: #007bff; background-color: #f8f9fa; font-size: 14px; padding: 3px; border-radius: 3px; margin-left: 10px;"
+    )
+  );
 
   // Assign Pokémon to trainers
   assignPokemons(selectedTrainers, pokemonCount);
 
   // Display Pokémon for each trainer
   selectedTrainers.forEach((trainer) => {
-    console.log(`${trainer.name}'s Pokémon:`);
+    console.log(
+      `%c${trainer.name}'s Pokémon:`,
+      "color: white; background-color: #007bff; font-weight: bold; font-size: 16px; padding: 5px; border-radius: 5px;"
+    );
     trainer.pokemonList.forEach((pokemon) =>
-      console.log(`- ${pokemon.name} (Type: ${pokemon.type})`)
+      console.log(
+        `%c- ${pokemon.name} (Type: ${pokemon.type}, Level: ${pokemon.level}, HP: ${pokemon.hp}, Defense: ${pokemon.defense}, Speed: ${pokemon.speed})`,
+        "color: #007bff; background-color: #f8f9fa; font-size: 14px; padding: 3px; border-radius: 3px; margin-left: 10px;"
+      )
     );
   });
+  let trainer1 = selectedTrainers[0];
+  let trainer2 = selectedTrainers[1];
+  let trainer3 = selectedTrainers[2];
+  let trainer4 = selectedTrainers[3];
+  let trainer5 = selectedTrainers[4];
 
+  // console.log(trainer1, trainer2, trainer3, trainer4, trainer5);
+
+  if (selectedTrainers.length === 3) {
+    console.log(
+      `%cFirst round of fight:`,
+      "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+    );
+    console.log(
+      `%c${trainer1.name} VS ${trainer2.name}`,
+      "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+    );
+    console.log(
+      `%cThe ${trainer3.name} is waiting`,
+      "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+    );
+  } else if (selectedTrainers.length === 4) {
+    console.log(
+      `%cFirst round of fight:`,
+      "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+    );
+    console.log(
+      `%c${trainer1.name} VS ${trainer2.name}`,
+      "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+    );
+    console.log(
+      `%cSecond round of fight:`,
+      "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+    );
+    console.log(
+      `%c${trainer3.name} VS ${trainer4.name}`,
+      "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+    );
+  } else if (selectedTrainers.length === 5) {
+    console.log(
+      `%cFirst round of fight:`,
+      "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+    );
+    console.log(
+      `%c${trainer1.name} VS ${trainer2.name}`,
+      "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+    );
+    console.log(
+      `%cSecond round of fight:`,
+      "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+    );
+    console.log(
+      `%c${trainer3.name} VS ${trainer4.name}`,
+      "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+    );
+    console.log(
+      `%cThe ${trainer5.name} is waiting`,
+      "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+    );
+  }
   // Start the round robin tournament
   const battle = new Battle();
   battle.startRoundRobinTournament(selectedTrainers);
