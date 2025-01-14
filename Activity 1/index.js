@@ -546,6 +546,20 @@ function getPokemonCount() {
     return getPokemonCount();
   }
 }
+function getTrainerNames(trainerCount) {
+  const trainerNames = [];
+  for (let i = 0; i < trainerCount; i++) {
+    let name;
+    do {
+      name = prompt(`Enter the name for Trainer ${i + 1}:`);
+      if (!name || name.trim() === "") {
+        alert("Invalid name. Please enter a valid name.");
+      }
+    } while (!name || name.trim() === "");
+    trainerNames.push(new Trainer(name.trim()));
+  }
+  return trainerNames;
+}
 
 // Generate Pokémon and assign to trainers
 function assignPokemons(trainers, pokemonCount) {
@@ -743,28 +757,126 @@ function assignPokemons(trainers, pokemonCount) {
 }
 
 // Main function to orchestrate the entire tournament
+// function startTournament() {
+//   const trainerCount = getTrainerCount();
+//   const pokemonCount = getPokemonCount();
+
+//   // List of possible trainers
+//   const allTrainers = [
+//     new Trainer("Ash"),
+//     new Trainer("Misty"),
+//     new Trainer("Brock"),
+//     new Trainer("Gary"),
+//     new Trainer("Paul"),
+//   ];
+
+//   // Randomly select trainers
+//   const selectedTrainers = [];
+//   while (selectedTrainers.length < trainerCount) {
+//     const randomIndex = Math.floor(Math.random() * allTrainers.length);
+//     const selectedTrainer = allTrainers[randomIndex];
+//     if (!selectedTrainers.includes(selectedTrainer)) {
+//       selectedTrainers.push(selectedTrainer);
+//     }
+//   }
+
+//   console.log(
+//     "%cSelected Trainers:",
+//     "color: white; background-color: #007bff; font-weight: bold; font-size: 16px; padding: 5px; border-radius: 5px;"
+//   );
+//   selectedTrainers.forEach((trainer) =>
+//     console.log(
+//       `%c${trainer.name}`,
+//       "color: #007bff; background-color: #f8f9fa; font-size: 14px; padding: 3px; border-radius: 3px; margin-left: 10px;"
+//     )
+//   );
+
+//   // Assign Pokémon to trainers
+//   assignPokemons(selectedTrainers, pokemonCount);
+
+//   // Display Pokémon for each trainer
+//   selectedTrainers.forEach((trainer) => {
+//     console.log(
+//       `%c${trainer.name}'s Pokémon:`,
+//       "color: white; background-color: #007bff; font-weight: bold; font-size: 16px; padding: 5px; border-radius: 5px;"
+//     );
+//     trainer.pokemonList.forEach((pokemon) =>
+//       console.log(
+//         `%c- ${pokemon.name} (Type: ${pokemon.type}, Level: ${pokemon.level}, HP: ${pokemon.hp}, Defense: ${pokemon.defense}, Speed: ${pokemon.speed})`,
+//         "color: #007bff; background-color: #f8f9fa; font-size: 14px; padding: 3px; border-radius: 3px; margin-left: 10px;"
+//       )
+//     );
+//   });
+//   let trainer1 = selectedTrainers[0];
+//   let trainer2 = selectedTrainers[1];
+//   let trainer3 = selectedTrainers[2];
+//   let trainer4 = selectedTrainers[3];
+//   let trainer5 = selectedTrainers[4];
+
+//   // console.log(trainer1, trainer2, trainer3, trainer4, trainer5);
+
+//   if (selectedTrainers.length === 3) {
+//     console.log(
+//       `%cFirst round of fight:`,
+//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+//     );
+//     console.log(
+//       `%c${trainer1.name} VS ${trainer2.name}`,
+//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+//     );
+//     console.log(
+//       `%cThe ${trainer3.name} is waiting`,
+//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+//     );
+//   } else if (selectedTrainers.length === 4) {
+//     console.log(
+//       `%cFirst round of fight:`,
+//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+//     );
+//     console.log(
+//       `%c${trainer1.name} VS ${trainer2.name}`,
+//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+//     );
+//     console.log(
+//       `%cSecond round of fight:`,
+//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+//     );
+//     console.log(
+//       `%c${trainer3.name} VS ${trainer4.name}`,
+//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+//     );
+//   } else if (selectedTrainers.length === 5) {
+//     console.log(
+//       `%cFirst round of fight:`,
+//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+//     );
+//     console.log(
+//       `%c${trainer1.name} VS ${trainer2.name}`,
+//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+//     );
+//     console.log(
+//       `%cSecond round of fight:`,
+//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+//     );
+//     console.log(
+//       `%c${trainer3.name} VS ${trainer4.name}`,
+//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+//     );
+//     console.log(
+//       `%cThe ${trainer5.name} is waiting`,
+//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
+//     );
+//   }
+//   // Start the round robin tournament
+//   const battle = new Battle();
+//   battle.startRoundRobinTournament(selectedTrainers);
+// }
 function startTournament() {
   const trainerCount = getTrainerCount();
   const pokemonCount = getPokemonCount();
 
-  // List of possible trainers
-  const allTrainers = [
-    new Trainer("Ash"),
-    new Trainer("Misty"),
-    new Trainer("Brock"),
-    new Trainer("Gary"),
-    new Trainer("Paul"),
-  ];
-
-  // Randomly select trainers
-  const selectedTrainers = [];
-  while (selectedTrainers.length < trainerCount) {
-    const randomIndex = Math.floor(Math.random() * allTrainers.length);
-    const selectedTrainer = allTrainers[randomIndex];
-    if (!selectedTrainers.includes(selectedTrainer)) {
-      selectedTrainers.push(selectedTrainer);
-    }
-  }
+  // Get trainer names from the user
+  const selectedTrainers = getTrainerNames(trainerCount);
 
   console.log(
     "%cSelected Trainers:",
@@ -793,13 +905,12 @@ function startTournament() {
       )
     );
   });
+
   let trainer1 = selectedTrainers[0];
   let trainer2 = selectedTrainers[1];
   let trainer3 = selectedTrainers[2];
   let trainer4 = selectedTrainers[3];
   let trainer5 = selectedTrainers[4];
-
-  // console.log(trainer1, trainer2, trainer3, trainer4, trainer5);
 
   if (selectedTrainers.length === 3) {
     console.log(
@@ -857,6 +968,5 @@ function startTournament() {
   const battle = new Battle();
   battle.startRoundRobinTournament(selectedTrainers);
 }
-
 // Start the tournament
 startTournament();
