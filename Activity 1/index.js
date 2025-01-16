@@ -326,54 +326,242 @@ class Battle {
     let winners = [];
     // stored the loser of the game
     let losers = [];
+    let big3 = [];
 
-    // First round
-    const battle1 = new Battle(trainers[0], trainers[1]);
-    const winner1 = battle1.start();
-    console.log(`Winner is: ${winner1.name}`);
-    let loser1;
-    if (winner1 === trainers[0]) {
-      loser1 = trainers[1];
-    } else {
-      loser1 = trainers[0];
-    }
+    // Log the winners and losers
 
-    if (trainers.length > 3) {
-      const battle2 = new Battle(trainers[2], trainers[3]);
-      const winner2 = battle2.start();
-      if (!winner2) {
-        console.error("Battle 2 did not produce a winner.");
-        return;
+    if (trainers.length === 3) {
+      const battle1 = new Battle(trainers[0], trainers[1]);
+      const winner1 = battle1.start();
+      console.log(`Winner is: ${winner1.name}`);
+      let loser1;
+      if (winner1 === trainers[0]) {
+        loser1 = trainers[1];
+      } else {
+        loser1 = trainers[0];
       }
+      if (!winners.includes(winner1)) winners.push(winner1);
+      if (losers.push(loser1));
+      // Log the winners and losers
+      console.log(
+        `%cWinners:`,
+        "font-size: 20px; color: green; background-color: lightgray; text-align: center; margin-right:50%; margin-left: 30%; padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 12px;"
+      );
+      winners.forEach((trainer) => {
+        console.log(
+          `%c${trainer.name} (Status: Winner)`,
+          "font-size: 18px; color: green; background-color: lightgray; text-align: center;padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 5px;"
+        );
+      });
+
+      console.log(
+        `%cLosers:`,
+        "font-size: 20px; color: red; background-color: lightgray; text-align: center; margin-right:50%; margin-left: 30%; padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 12px;"
+      );
+      losers.forEach((trainer) => {
+        console.log(
+          `%c${trainer.name} (Status: Loser)`,
+          "font-size: 18px; color: red; background-color: lightgray; text-align: center; margin: 10px 0; padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 5px;"
+        );
+      });
+      const battle2 = new Battle(winner1, trainers[2]);
+      const winner2 = battle2.start();
       console.log(`Winner is: ${winner2.name}`);
       let loser2;
-      if (winner2 === trainers[2]) {
-        loser2 = trainers[3];
+      if (winner2 === winner1) {
+        loser2 = trainers[2];
       } else {
         loser2 = trainers[2];
       }
-      if (winner1) winners.push(winner1);
-      if (winner2) winners.push(winner2);
-      if (loser1) losers.push(loser1);
-      if (loser2) losers.push(loser2);
-    } else if (trainers.length === 3) {
-      const battle2 = new Battle(trainers[1], trainers[2]);
-      const winner2 = battle2.start();
-      console.log(`Winner is: ${winner2.name}`);
-      const loser2 = winner2 === trainers[1] ? trainers[2] : trainers[1];
+      if (!winners.includes(winner2)) winners.push(winner2);
+      if (losers.push(loser2));
+      // Eliminate the trainer who lost both battles
+      const eliminatedTrainer = losers.find(
+        (trainer) => losers.filter((t) => t === trainer).length === 1
+      );
 
-      const battle3 = new Battle(trainers[0], trainers[2]);
+      if (eliminatedTrainer) {
+        console.log(
+          `%c${eliminatedTrainer.name} has been eliminated!`,
+          "color: red; font-weight: bold; font-size: 20px;"
+        );
+        losers = losers.filter((trainer) => trainer !== eliminatedTrainer);
+        winners = winners.filter((trainer) => trainer !== eliminatedTrainer);
+      }
+
+      // Determine the champion
+      const champion = winner2;
+      console.log(
+        `%c🎉🏆The Champion of the tournament is ${champion.name}!🏆🎉`,
+        "color: green; font-weight: bold; font-size: 20px;margin-right:26%; margin-left:26%;margin-top:30px; margin-bottom:30px; background: white; border: 1px solid black; border-radius: 4px; padding-top:30px; padding-bottom:30px; padding-left:30px; padding-right:30px; text-align: center"
+      );
+    } else if (trainers.length === 4) {
+      const battle3 = new Battle(trainers[0], trainers[1]);
       const winner3 = battle3.start();
       console.log(`Winner is: ${winner3.name}`);
-      const loser3 = winner3 === trainers[0] ? trainers[2] : trainers[0];
+      let loser3;
+      if (winner3 === trainers[0]) {
+        loser3 = trainers[1];
+      } else {
+        loser3 = trainers[0];
+      }
+      if (!winners.includes(winner3)) winners.push(winner3);
+      if (losers.push(loser3));
 
-      if (winner1) winners.push(winner1);
-      if (winner2) winners.push(winner2);
-      if (winner3) winners.push(winner3);
-      if (loser1) losers.push(loser1);
-      if (loser2) losers.push(loser2);
-      if (loser3) losers.push(loser3);
+      const battle4 = new Battle(trainers[2], trainers[3]);
+      const winner4 = battle4.start();
+      console.log(`Winner is: ${winner4.name}`);
+      let loser4;
+      if (winner4 === trainers[2]) {
+        loser4 = trainers[3];
+      } else {
+        loser4 = trainers[2];
+      }
+      if (!winners.includes(winner4)) winners.push(winner4);
+      if (losers.push(loser4));
 
+      console.log(
+        `%cWinners:`,
+        "font-size: 20px; color: green; background-color: lightgray; text-align: center; margin-right:50%; margin-left: 30%; padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 12px;"
+      );
+      winners.forEach((trainer) => {
+        console.log(
+          `%c${trainer.name} (Status: Winner)`,
+          "font-size: 18px; color: green; background-color: lightgray; text-align: center;padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 5px;"
+        );
+      });
+
+      console.log(
+        `%cLosers:`,
+        "font-size: 20px; color: red; background-color: lightgray; text-align: center; margin-right:50%; margin-left: 30%; padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 12px;"
+      );
+      losers.forEach((trainer) => {
+        console.log(
+          `%c${trainer.name} (Status: Loser)`,
+          "font-size: 18px; color: red; background-color: lightgray; text-align: center; margin: 10px 0; padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 5px;"
+        );
+      });
+
+      // Eliminate the trainer who lost both battles
+      const eliminatedTrainer = losers.find(
+        (trainer) => losers.filter((t) => t === trainer).length === 1
+      );
+
+      if (eliminatedTrainer) {
+        console.log(
+          `%c${eliminatedTrainer.name} has been eliminated!`,
+          "color: red; font-weight: bold; font-size: 20px;"
+        );
+        losers = losers.filter((trainer) => trainer !== eliminatedTrainer);
+        winners = winners.filter((trainer) => trainer !== eliminatedTrainer);
+      }
+
+      const battle5 = new Battle(winner3, winner4);
+      const winner5 = battle5.start();
+      console.log(`Winner is: ${winner5.name}`);
+      let loser5;
+      if (winner5 === winner3) {
+        loser5 = winner4;
+      } else {
+        loser5 = winner3;
+      }
+      if (!winners.includes(winner5)) winners.push(winner5);
+      if (losers.push(loser5));
+      // Log the winners and losers
+
+      const champion = winner5;
+      console.log(
+        `%c🎉🏆The Champion of the tournament is ${champion.name}!🏆🎉`,
+        "color: green; font-weight: bold; font-size: 20px;margin-right:26%; margin-left:26%;margin-top:30px; margin-bottom:30px; background: white; border: 1px solid black; border-radius: 4px; padding-top:30px; padding-bottom:30px; padding-left:30px; padding-right:30px; text-align: center"
+      );
+    } else if (trainers.length === 5) {
+      const battle6 = new Battle(trainers[0], trainers[1]);
+      const winner6 = battle6.start();
+      console.log(`Winner is: ${winner6.name}`);
+      let loser6;
+      if (winner6 === trainers[0]) {
+        loser6 = trainers[1];
+      } else {
+        loser6 = trainers[0];
+      }
+      if (!winners.includes(winner6)) winners.push(winner6);
+      if (losers.push(loser6));
+
+      const battle7 = new Battle(trainers[2], trainers[3]);
+      const winner7 = battle7.start();
+      console.log(`Winner is: ${winner7.name}`);
+      let loser7;
+      if (winner7 === trainers[2]) {
+        loser7 = trainers[3];
+      } else {
+        loser7 = trainers[2];
+      }
+      if (!winners.includes(winner7)) winners.push(winner7);
+      if (losers.push(loser7));
+      console.log(
+        `%cWinners:`,
+        "font-size: 20px; color: green; background-color: lightgray; text-align: center; margin-right:50%; margin-left: 30%; padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 12px;"
+      );
+      winners.forEach((trainer) => {
+        console.log(
+          `%c${trainer.name} (Status: Winner)`,
+          "font-size: 18px; color: green; background-color: lightgray; text-align: center;padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 5px;"
+        );
+      });
+
+      console.log(
+        `%cLosers:`,
+        "font-size: 20px; color: red; background-color: lightgray; text-align: center; margin-right:50%; margin-left: 30%; padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 12px;"
+      );
+      losers.forEach((trainer) => {
+        console.log(
+          `%c${trainer.name} (Status: Loser)`,
+          "font-size: 18px; color: red; background-color: lightgray; text-align: center; margin: 10px 0; padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 5px;"
+        );
+      });
+
+      const battle8 = new Battle(winner6, winner7);
+      const winner8 = battle8.start();
+      console.log(`Winner is: ${winner8.name}`);
+      let loser8;
+      if (winner8 === winner6) {
+        loser8 = winner7;
+      } else {
+        loser8 = winner6;
+      }
+      if (!big3.includes(winner8)) big3.push(winner8);
+      if (losers.push(loser8));
+      // Log the winners and losers
+      console.log(
+        `%cBattle of loser bracket`,
+        "font-size: 18px; color: red; background-color: #1c7ed6; text-align: center;padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 5px; margin-right: 26%; margin-left:26%"
+      );
+
+      const battleLoser2 = new Battle(loser6, loser7);
+      const battleLoserWin2 = battleLoser2.start();
+      console.log(`Winner is: ${battleLoserWin2.name}`);
+      let loser10;
+      if (battleLoserWin2 === loser6) {
+        loser10 = loser7;
+      } else {
+        loser10 = loser6;
+      }
+      if (losers.push(loser10));
+
+      const battleLoser3 = new Battle(battleLoserWin2, trainers[4]);
+      const battleLoserWin3 = battleLoser3.start();
+      console.log(`Winner is: ${battleLoserWin3.name}`);
+      let loser9;
+      if (battleLoserWin3 === battleLoserWin2) {
+        loser9 = trainers[4];
+      } else {
+        loser9 = battleLoserWin2;
+      }
+      if (!big3.includes(battleLoserWin3)) big3.push(battleLoserWin3);
+
+      const battleLoser4 = new Battle(loser9, loser8);
+      const battleLoserWin4 = battleLoser4.start();
+      console.log(`Winner is: ${battleLoserWin4.name}`);
       // Eliminate the trainer who lost both battles
       const eliminatedTrainer = losers.find(
         (trainer) => losers.filter((t) => t === trainer).length === 2
@@ -387,132 +575,52 @@ class Battle {
         losers = losers.filter((trainer) => trainer !== eliminatedTrainer);
         winners = winners.filter((trainer) => trainer !== eliminatedTrainer);
       }
-    } else {
-      winners.push(winner1);
-      losers.push(loser1);
-    }
 
-    // Log the winners and losers
-    console.log(
-      `%cWinners:`,
-      "font-size: 20px; color: green; background-color: lightgray; text-align: center; margin-right:50%; margin-left: 30%; padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 12px;"
-    );
-    winners.forEach((trainer) => {
-      console.log(
-        `%c${trainer.name} (Status: Winner)`,
-        "font-size: 18px; color: green; background-color: lightgray; text-align: center;padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 5px;"
-      );
-    });
+      if (!big3.includes(battleLoserWin4)) big3.push(battleLoserWin4);
+      // Top 3
+      console.log("The Top 3 Trainers are: ");
+      big3.forEach((trainer) => {
+        console.log(
+          `%c${trainer.name}`,
+          "color: green; font-weight: bold; font-size: 20px;"
+        );
+      });
+      console.log("Final round: Round Robin...");
+      let winCounts = new Map();
+      let champion = null;
 
-    console.log(
-      `%cLosers:`,
-      "font-size: 20px; color: red; background-color: lightgray; text-align: center; margin-right:50%; margin-left: 30%; padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 12px;"
-    );
-    losers.forEach((trainer) => {
-      console.log(
-        `%c${trainer.name} (Status: Loser)`,
-        "font-size: 18px; color: red; background-color: lightgray; text-align: center; margin: 10px 0; padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 5px;"
-      );
-    });
+      for (let i = 0; i < big3.length; i++) {
+        for (let j = i + 1; j < big3.length; j++) {
+          const battle = new Battle(big3[i], big3[j]);
+          const winner = battle.start();
+          if (!winner) {
+            console.error("Battle did not produce a winner.");
+            return;
+          }
 
-    // Second round
-    // If there are more than one win, conduct a battle between the first two losers
-    if (winners.length > 1) {
-      console.log(
-        `%cSecond round:`,
-        "font-size: 18px; color: green; background-color: lightgray; text-align: center;padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 5px;"
-      );
-      const battle3 = new Battle(winners[0], winners[1]);
-      const finalWinner = battle3.start();
-      if (!finalWinner) {
-        console.error("Battle 3 did not produce a winner.");
-        return;
+          // Update win counts
+          if (!winCounts.has(winner)) {
+            winCounts.set(winner, 0);
+          }
+          winCounts.set(winner, winCounts.get(winner) + 1);
+
+          // Check if the winner has won 2 times
+          if (winCounts.get(winner) === 2) {
+            champion = winner;
+            break;
+          }
+        }
+        if (champion) {
+          break;
+        }
       }
-      const waitingTrainer =
-        finalWinner === winners[0] ? winners[0] : winners[1];
-      const waitingLoser = finalWinner === winners[0] ? winners[1] : winners[0];
 
-      // Fourth round Battle of the loser
-      // If there are more than one loser, conduct a battle between the first two losers
-      console.log(
-        `%cBattle of loser bracket`,
-        "font-size: 18px; color: red; background-color: #1c7ed6; text-align: center;padding-top:20px; padding-bottom:20px;padding-right:20px;padding-left:20px; border-radius: 5px; margin-right: 26%; margin-left:26%"
-      );
-      if (losers.length > 1) {
-        const battle4 = new Battle(losers[0], losers[1]);
-        const loserWinner = battle4.start();
-        if (!loserWinner) {
-          console.error("Battle 4 did not produce a winner.");
-          return;
-        }
-
-        //Determine the eliminated trainer based on the loser of the battle
-        const eliminatedTrainer =
-          loserWinner === losers[0] ? losers[1] : losers[0];
-
-        if (eliminatedTrainer) {
-          console.log(
-            `%c${eliminatedTrainer.name} has been eliminated!`,
-            "color: red; font-weight: bold; font-size: 20px;"
-          );
-        }
-
-        // Third round
-        if (trainers.length === 5) {
-          console.log("Third round:");
-          const battle5 = new Battle(loserWinner, trainers[4]);
-          const finalLoserWinner = battle5.start();
-          if (!finalLoserWinner) {
-            console.error("Battle 5 did not produce a winner.");
-            return;
-          }
-
-          // Final round
-          console.log("Final round:");
-          waitingLoser.fullyHealAllPokemons();
-          const finalBattle = new Battle(waitingTrainer, finalLoserWinner);
-          const champion = finalBattle.start();
-          if (!champion) {
-            console.error("Final battle did not produce a champion.");
-            return;
-          }
-
-          console.log(
-            `%c🎉🏆The Champion of the tournament is ${champion.name}!🏆🎉`,
-            "color: green; font-weight: bold; font-size: 20px;margin-right:26%; margin-left:26%;margin-top:30px; margin-bottom:30px; background: white; border: 1px solid black; border-radius: 4px; padding-top:30px; padding-bottom:30px; padding-left:30px; padding-right:30px; text-align: center"
-          );
-        } else {
-          // Final round for 4 trainers
-          console.log("Final round:");
-          const finalBattle = new Battle(waitingTrainer, loserWinner);
-          const champion = finalBattle.start();
-
-          console.log(
-            `%c🎉🏆The Champion of the tournament is ${champion.name}!🏆🎉`,
-            "color: green; font-weight: bold; font-size: 20px;margin-right:26%; margin-left:26%;margin-top:30px; margin-bottom:30px; background: white; border: 1px solid black; border-radius: 4px; padding-top:30px; padding-bottom:30px; padding-left:30px; padding-right:30px; text-align: center"
-          );
-        }
-      } else {
-        // Final round for 3 trainers
-        console.log("Final round:");
-        const finalBattle = new Battle(winners[0], waitingLoser);
-        const champion = finalBattle.start();
-
+      if (champion) {
         console.log(
           `%c🎉🏆The Champion of the tournament is ${champion.name}!🏆🎉`,
           "color: green; font-weight: bold; font-size: 20px;margin-right:26%; margin-left:26%;margin-top:30px; margin-bottom:30px; background: white; border: 1px solid black; border-radius: 4px; padding-top:30px; padding-bottom:30px; padding-left:30px; padding-right:30px; text-align: center"
         );
       }
-    } else {
-      // Final round for 2 trainers
-      console.log("Final round:");
-      const finalBattle = new Battle(winners[0], losers[0]);
-      const champion = finalBattle.start();
-
-      console.log(
-        `%c🎉🏆The Champion of the tournament is ${champion.name}!🏆🎉`,
-        "color: green; font-weight: bold; font-size: 20px;margin-right:26%; margin-left:26%;margin-top:30px; margin-bottom:30px; background: white; border: 1px solid black; border-radius: 4px; padding-top:30px; padding-bottom:30px; padding-left:30px; padding-right:30px; text-align: center"
-      );
     }
   }
 }
@@ -756,121 +864,7 @@ function assignPokemons(trainers, pokemonCount) {
   });
 }
 
-// Main function to orchestrate the entire tournament
-// function startTournament() {
-//   const trainerCount = getTrainerCount();
-//   const pokemonCount = getPokemonCount();
-
-//   // List of possible trainers
-//   const allTrainers = [
-//     new Trainer("Ash"),
-//     new Trainer("Misty"),
-//     new Trainer("Brock"),
-//     new Trainer("Gary"),
-//     new Trainer("Paul"),
-//   ];
-
-//   // Randomly select trainers
-//   const selectedTrainers = [];
-//   while (selectedTrainers.length < trainerCount) {
-//     const randomIndex = Math.floor(Math.random() * allTrainers.length);
-//     const selectedTrainer = allTrainers[randomIndex];
-//     if (!selectedTrainers.includes(selectedTrainer)) {
-//       selectedTrainers.push(selectedTrainer);
-//     }
-//   }
-
-//   console.log(
-//     "%cSelected Trainers:",
-//     "color: white; background-color: #007bff; font-weight: bold; font-size: 16px; padding: 5px; border-radius: 5px;"
-//   );
-//   selectedTrainers.forEach((trainer) =>
-//     console.log(
-//       `%c${trainer.name}`,
-//       "color: #007bff; background-color: #f8f9fa; font-size: 14px; padding: 3px; border-radius: 3px; margin-left: 10px;"
-//     )
-//   );
-
-//   // Assign Pokémon to trainers
-//   assignPokemons(selectedTrainers, pokemonCount);
-
-//   // Display Pokémon for each trainer
-//   selectedTrainers.forEach((trainer) => {
-//     console.log(
-//       `%c${trainer.name}'s Pokémon:`,
-//       "color: white; background-color: #007bff; font-weight: bold; font-size: 16px; padding: 5px; border-radius: 5px;"
-//     );
-//     trainer.pokemonList.forEach((pokemon) =>
-//       console.log(
-//         `%c- ${pokemon.name} (Type: ${pokemon.type}, Level: ${pokemon.level}, HP: ${pokemon.hp}, Defense: ${pokemon.defense}, Speed: ${pokemon.speed})`,
-//         "color: #007bff; background-color: #f8f9fa; font-size: 14px; padding: 3px; border-radius: 3px; margin-left: 10px;"
-//       )
-//     );
-//   });
-//   let trainer1 = selectedTrainers[0];
-//   let trainer2 = selectedTrainers[1];
-//   let trainer3 = selectedTrainers[2];
-//   let trainer4 = selectedTrainers[3];
-//   let trainer5 = selectedTrainers[4];
-
-//   // console.log(trainer1, trainer2, trainer3, trainer4, trainer5);
-
-//   if (selectedTrainers.length === 3) {
-//     console.log(
-//       `%cFirst round of fight:`,
-//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
-//     );
-//     console.log(
-//       `%c${trainer1.name} VS ${trainer2.name}`,
-//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
-//     );
-//     console.log(
-//       `%cThe ${trainer3.name} is waiting`,
-//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
-//     );
-//   } else if (selectedTrainers.length === 4) {
-//     console.log(
-//       `%cFirst round of fight:`,
-//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
-//     );
-//     console.log(
-//       `%c${trainer1.name} VS ${trainer2.name}`,
-//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
-//     );
-//     console.log(
-//       `%cSecond round of fight:`,
-//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
-//     );
-//     console.log(
-//       `%c${trainer3.name} VS ${trainer4.name}`,
-//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
-//     );
-//   } else if (selectedTrainers.length === 5) {
-//     console.log(
-//       `%cFirst round of fight:`,
-//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
-//     );
-//     console.log(
-//       `%c${trainer1.name} VS ${trainer2.name}`,
-//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
-//     );
-//     console.log(
-//       `%cSecond round of fight:`,
-//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
-//     );
-//     console.log(
-//       `%c${trainer3.name} VS ${trainer4.name}`,
-//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
-//     );
-//     console.log(
-//       `%cThe ${trainer5.name} is waiting`,
-//       "font-size: 20px; color: #dee2e6; background-color: #343a40; text-align: center;padding-left:40%; padding-right:40%; border-radius: 12px;"
-//     );
-//   }
-//   // Start the round robin tournament
-//   const battle = new Battle();
-//   battle.startRoundRobinTournament(selectedTrainers);
-// }
+// Function to get the number of trainers from the user
 function startTournament() {
   const trainerCount = getTrainerCount();
   const pokemonCount = getPokemonCount();
